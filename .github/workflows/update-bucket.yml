@@ -13,9 +13,6 @@ on:
         description: "Version without leading v (optional)"
         required: false
         type: string
-  repository_dispatch:
-    types:
-      - source-release-published
 
 permissions:
   contents: write
