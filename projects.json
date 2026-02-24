@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "id": "aliae",
+      "sourceRepo": "trajano/aliae",
+      "manifest": "bucket/aliae.json",
+      "description": "Cross platform shell management.",
+      "homepage": "https://trajano.github.io/aliae/",
+      "license": "MIT",
+      "bin": [
+        "aliae.exe"
+      ],
+      "architectures": [
+        {
+          "name": "64bit",
+          "asset": "aliae-windows-amd64.exe",
+          "urlTemplate": "https://github.com/trajano/aliae/releases/download/v{version}/aliae-windows-amd64.exe"
+        },
+        {
+          "name": "32bit",
+          "asset": "aliae-windows-386.exe",
+          "urlTemplate": "https://github.com/trajano/aliae/releases/download/v{version}/aliae-windows-386.exe"
+        },
+        {
+          "name": "arm64",
+          "asset": "aliae-windows-arm64.exe",
+          "urlTemplate": "https://github.com/trajano/aliae/releases/download/v{version}/aliae-windows-arm64.exe"
+        }
+      ]
+    }
+  ]
+}
