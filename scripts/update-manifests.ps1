@@ -32,18 +32,7 @@ $projects = @($projectsConfig.projects)
 
 $inputProject = $env:INPUT_PROJECT
 $inputVersion = $env:INPUT_VERSION
-$eventName = $env:GITHUB_EVENT_NAME
-$eventPath = $env:GITHUB_EVENT_PATH
 $token = $env:GH_TOKEN
-
-$dispatchRepo = $null
-$dispatchTag = $null
-if ($eventName -eq "repository_dispatch" -and (Test-Path $eventPath)) {
-  $event = Get-Content $eventPath -Raw | ConvertFrom-Json
-  $dispatchRepo = $event.client_payload.source_repo
-  $dispatchTag = $event.client_payload.tag
-}
-
 $updated = @()
 
 foreach ($project in $projects) {
@@ -51,16 +40,7 @@ foreach ($project in $projects) {
     continue
   }
 
-  if (-not [string]::IsNullOrWhiteSpace($dispatchRepo) -and $project.sourceRepo -ne $dispatchRepo) {
-    continue
-  }
-
-  $selectedVersion = $inputVersion
-  if ([string]::IsNullOrWhiteSpace($selectedVersion) -and -not [string]::IsNullOrWhiteSpace($dispatchTag) -and $project.sourceRepo -eq $dispatchRepo) {
-    $selectedVersion = $dispatchTag
-  }
-
-  $release = Get-Release -repo $project.sourceRepo -version $selectedVersion -token $token
+  $release = Get-Release -repo $project.sourceRepo -version $inputVersion -token $token
   $version = $release.tag_name.TrimStart("v")
 
   $architecture = [ordered]@{}
