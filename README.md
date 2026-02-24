@@ -1,5 +1,10 @@
 # scoop-bucket
 
+Central Scoop bucket for projects maintained under `trajano/*`.
+
+This repository updates manifests from upstream GitHub releases using GitHub Actions.
+It is generic: add more entries in `projects.json` and the same workflow will update them.
+
 ## Add this bucket to Scoop
 
 Run these commands in PowerShell:
@@ -14,4 +19,36 @@ To update installed apps:
 ```powershell
 scoop update
 scoop update aliae
+```
+
+## Current flow
+
+- Scheduled workflow checks latest releases for configured source repositories.
+- Manual workflow dispatch can update all projects or one project/version.
+- Optional `repository_dispatch` event (`source-release-published`) can trigger immediate updates.
+
+## Add a project
+
+1. Add a new object to `projects.json` under `projects`.
+2. Set:
+   - `id`: short manifest id.
+   - `sourceRepo`: owner/repo where releases are published.
+   - `manifest`: output path in this bucket (for example `bucket/tool.json`).
+   - `architectures`: each architecture with asset filename and release URL template.
+3. Commit to `master`.
+4. Run the workflow manually once to initialize the manifest.
+
+## Optional source-repo trigger
+
+From a source repository workflow, send `repository_dispatch` to this repo:
+
+```yaml
+- name: Notify scoop-bucket
+  env:
+    GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
+  run: |
+    gh api repos/trajano/scoop-bucket/dispatches \
+      -f event_type='source-release-published' \
+      -f client_payload[source_repo]='trajano/aliae' \
+      -f client_payload[tag]="${GITHUB_REF_NAME}"
 ```
