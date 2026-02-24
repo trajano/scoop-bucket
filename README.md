@@ -25,7 +25,6 @@ scoop update aliae
 
 - Scheduled workflow checks latest releases for configured source repositories.
 - Manual workflow dispatch can update all projects or one project/version.
-- Optional `repository_dispatch` event (`source-release-published`) can trigger immediate updates.
 
 ## Add a project
 
@@ -37,18 +36,3 @@ scoop update aliae
    - `architectures`: each architecture with asset filename and release URL template.
 3. Commit to `master`.
 4. Run the workflow manually once to initialize the manifest.
-
-## Optional source-repo trigger
-
-From a source repository workflow, send `repository_dispatch` to this repo:
-
-```yaml
-- name: Notify scoop-bucket
-  env:
-    GH_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
-  run: |
-    gh api repos/trajano/scoop-bucket/dispatches \
-      -f event_type='source-release-published' \
-      -f client_payload[source_repo]='trajano/aliae' \
-      -f client_payload[tag]="${GITHUB_REF_NAME}"
-```
