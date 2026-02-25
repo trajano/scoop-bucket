@@ -5,15 +5,15 @@
   "license": "MIT",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-amd64.exe",
+      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-amd64.exe#/aliae.exe",
       "hash": "8359c6dd88855257938eed8bd5b33de885d37102f6029fbdd5a6714da95759ed"
     },
     "32bit": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-386.exe",
+      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-386.exe#/aliae.exe",
       "hash": "bad60219fb2bd6ad7903d109bbbb9e581baa001e59baa7b5e5bfb5082296e486"
     },
     "arm64": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-arm64.exe",
+      "url": "https://github.com/trajano/aliae/releases/download/v1.6.0/aliae-windows-arm64.exe#/aliae.exe",
       "hash": "e0a625bdb6df0eeff77322781ee55cfc2b8553e8359454483469021712152bec"
     }
   },
@@ -26,13 +26,13 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-amd64.exe"
+        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-amd64.exe#/aliae.exe"
       },
       "32bit": {
-        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-386.exe"
+        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-386.exe#/aliae.exe"
       },
       "arm64": {
-        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-arm64.exe"
+        "url": "https://github.com/trajano/aliae/releases/download/v$version/aliae-windows-arm64.exe#/aliae.exe"
       }
     }
   }

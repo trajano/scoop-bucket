@@ -27,6 +27,18 @@ function Get-AssetSha256([object]$release, [string]$assetName, [string]$token) {
   return $hash
 }
 
+function Add-RenameFragment([string]$url, [string]$renameTo) {
+  if ([string]::IsNullOrWhiteSpace($renameTo)) {
+    return $url
+  }
+
+  if ($url.Contains("#")) {
+    return $url
+  }
+
+  return "$url#/$renameTo"
+}
+
 $projectsConfig = Get-Content "projects.json" -Raw | ConvertFrom-Json
 $projects = @($projectsConfig.projects)
 
@@ -47,7 +59,7 @@ foreach ($project in $projects) {
   $autoArchitecture = [ordered]@{}
 
   foreach ($arch in $project.architectures) {
-    $url = $arch.urlTemplate.Replace("{version}", $version)
+    $url = Add-RenameFragment -url $arch.urlTemplate.Replace("{version}", $version) -renameTo $arch.renameTo
     $hash = Get-AssetSha256 -release $release -assetName $arch.asset -token $token
 
     $architecture[$arch.name] = [ordered]@{
@@ -56,7 +68,7 @@ foreach ($project in $projects) {
     }
 
     $autoArchitecture[$arch.name] = [ordered]@{
-      url = $arch.urlTemplate.Replace("{version}", '$version')
+      url = Add-RenameFragment -url $arch.urlTemplate.Replace("{version}", '$version') -renameTo $arch.renameTo
     }
   }
 
