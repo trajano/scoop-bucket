@@ -1,20 +1,20 @@
 {
-  "version": "1.11.1",
+  "version": "1.12.0",
   "description": "Cross platform shell management.",
   "homepage": "https://trajano.github.io/aliae/",
   "license": "MIT",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.11.1/aliae-windows-amd64.exe#/aliae.exe",
-      "hash": "65c5ba856d9b7d6e94c553a1585631338fd9c689638b981b11bf5f9ee9d6df48"
+      "url": "https://github.com/trajano/aliae/releases/download/v1.12.0/aliae-windows-amd64.exe#/aliae.exe",
+      "hash": "30577517fa8d3433e196ff4baf8836924d2d495ae33e5dd8c5ff89e4a020acb1"
     },
     "32bit": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.11.1/aliae-windows-386.exe#/aliae.exe",
-      "hash": "8f2e945b804308198d10386c40eb82a40d402d9219d64b9494fba6ff436a66bc"
+      "url": "https://github.com/trajano/aliae/releases/download/v1.12.0/aliae-windows-386.exe#/aliae.exe",
+      "hash": "fde534aee558d643bf3216393becc9b681e4d943bfb84724884adc9897fdc0bd"
     },
     "arm64": {
-      "url": "https://github.com/trajano/aliae/releases/download/v1.11.1/aliae-windows-arm64.exe#/aliae.exe",
-      "hash": "9656663422ff68c0249533994d1ed0ca809aa74eb64b4bba25c4168f0cd78dc4"
+      "url": "https://github.com/trajano/aliae/releases/download/v1.12.0/aliae-windows-arm64.exe#/aliae.exe",
+      "hash": "7d88ea4cea5085949d4d2ed4ccd776d5400ef96e31a28ef3af69d28a579b731a"
     }
   },
   "bin": [
