@@ -2,6 +2,16 @@ name: Update Scoop Bucket
 on:
   schedule:
     - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Project id from projects.json (optional)"
+        required: false
+        type: string
+      version:
+        description: "Version without leading v (optional)"
+        required: false
+        type: string
   repository_dispatch:
     types: [aliae_release_published]
 
@@ -18,7 +28,7 @@ jobs:
       - name: Resolve project metadata
         shell: pwsh
         env:
-          INPUT_PROJECT: ${{ inputs.project }}
+          INPUT_PROJECT: ${{ github.event.inputs.project || github.event.client_payload.project || '' }}
         run: |
           $projectsConfig = Get-Content "projects.json" -Raw | ConvertFrom-Json
           $projects = @($projectsConfig.projects)
@@ -37,7 +47,7 @@ jobs:
           "SOURCE_REPO=$($project.sourceRepo)" >> $env:GITHUB_ENV
 
       - name: Get latest release
-        if: ${{ inputs.version == '' || inputs.version == null }}
+        if: ${{ github.event.inputs.version == '' || github.event.inputs.version == null }}
         id: latest_release
         uses: pozetroninc/github-action-get-latest-release@master
         with:
@@ -49,6 +59,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           INPUT_PROJECT: ${{ env.INPUT_PROJECT }}
-          INPUT_VERSION: ${{ inputs.version || fromJson(steps.latest_release.outputs.release).tag_name }}
+          INPUT_VERSION: ${{ github.event.inputs.version || github.event.client_payload.version || steps.latest_release.outputs.release }}
         run: |
           ./scripts/update-manifests.ps1
