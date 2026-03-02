@@ -1,11 +1,11 @@
 $ErrorActionPreference = "Stop"
 
 function Get-Release([string]$repo, [string]$version, [string]$token) {
-  $headers = @{ Authorization = "Bearer $token" }
   if ([string]::IsNullOrWhiteSpace($version)) {
-    return Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$repo/releases/latest"
+    throw "INPUT_VERSION is required. Resolve latest tags in the workflow via get-latest-release."
   }
 
+  $headers = @{ Authorization = "Bearer $token" }
   $trimmed = $version.TrimStart("v")
   return Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/$repo/releases/tags/v$trimmed"
 }
@@ -103,5 +103,13 @@ if ((git status --porcelain).Length -eq 0) {
 git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 git add bucket/*.json
-git commit -m "chore(scoop): update manifests ($($updated -join ', '))"
+
+if ($updated.Count -eq 1) {
+  $parts = $updated[0].Split(":", 2)
+  $commitMessage = "$($parts[0]): Update to version $($parts[1])"
+} else {
+  $commitMessage = "scoop: Update manifests ($($updated -join ', '))"
+}
+
+git commit -m $commitMessage
 git push

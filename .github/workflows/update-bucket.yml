@@ -15,11 +15,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
+      - name: Resolve project metadata
+        shell: pwsh
+        env:
+          INPUT_PROJECT: ${{ inputs.project }}
+        run: |
+          $projectsConfig = Get-Content "projects.json" -Raw | ConvertFrom-Json
+          $projects = @($projectsConfig.projects)
+
+          if ([string]::IsNullOrWhiteSpace($env:INPUT_PROJECT)) {
+            $project = $projects | Select-Object -First 1
+          } else {
+            $project = $projects | Where-Object { $_.id -eq $env:INPUT_PROJECT } | Select-Object -First 1
+          }
+
+          if ($null -eq $project) {
+            throw "Project '$($env:INPUT_PROJECT)' was not found in projects.json"
+          }
+
+          "INPUT_PROJECT=$($project.id)" >> $env:GITHUB_ENV
+          "SOURCE_REPO=$($project.sourceRepo)" >> $env:GITHUB_ENV
+
+      - name: Get latest release
+        if: ${{ inputs.version == '' || inputs.version == null }}
+        id: latest_release
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          excludes: prerelease, draft
+
       - name: Update manifests
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          INPUT_PROJECT: ${{ inputs.project }}
-          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_PROJECT: ${{ env.INPUT_PROJECT }}
+          INPUT_VERSION: ${{ inputs.version || fromJson(steps.latest_release.outputs.release).tag_name }}
         run: |
           ./scripts/update-manifests.ps1
